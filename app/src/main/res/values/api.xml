@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- https://www.themoviedb.org -->
+    <string name="movies_api_base">http://api.themoviedb.org/3/discover/movie?</string>
+    <string name="movies_sort_by_param">sort_by</string>
+    <string name="movies_api_key_param">api_key</string>
+</resources>
