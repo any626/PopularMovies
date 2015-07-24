@@ -31,18 +31,25 @@ public class MainActivityFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_main, container, false);
     }
 
-    public class FetchMoviesTask extends AsyncTask<String, Void, String[]>{
+    @Override
+    public void onStart(){
+        super.onStart();
+        FetchMoviesTask moviesTask = new FetchMoviesTask();
+        moviesTask.execute();
+    }
+
+    public class FetchMoviesTask extends AsyncTask<String, Void, String>{
 
         private final String LOG_TAG = FetchMoviesTask.class.getSimpleName();
 
         @Override
-        protected String[] doInBackground(String... params) {
+        protected String doInBackground(String... params) {
 
             final String defaultSort = "popularity.desc";
 
-            if(params.length == 0){
-                params[0] = defaultSort;
-            }
+//            if(params.length == 0){
+//                params[0] = defaultSort;
+//            }
 
             // These two need to be declared outside the try/catch
             // so that they can be closed in the finally block.
@@ -55,7 +62,7 @@ public class MainActivityFragment extends Fragment {
             try{
                 Uri builtUri = Uri.parse(getString(R.string.movies_api_base)).buildUpon()
                         .appendQueryParameter(getString(R.string.movies_api_key_param), getString(R.string.movies_api_key))
-                        .appendQueryParameter(getString(R.string.movies_sort_by_param), params[0]).build();
+                        .appendQueryParameter(getString(R.string.movies_sort_by_param), defaultSort).build();
                 URL url = new URL(builtUri.toString());
 
                 //create request to api
@@ -81,6 +88,8 @@ public class MainActivityFragment extends Fragment {
                 }
 
                 moviesJsonString = buffer.toString();
+                Log.e(LOG_TAG, moviesJsonString);
+                return moviesJsonString;
             } catch (IOException e){
                 Log.e(LOG_TAG, e.getMessage(), e);
                 e.printStackTrace();
